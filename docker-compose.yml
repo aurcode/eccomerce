@@ -1,0 +1,43 @@
+
+version: '3.4'
+
+volumes:
+  inventory-datafiles:
+#  logs-datafiles:
+
+
+services:
+  logs-database:
+    image: mysql:5.7
+    ports:
+      - "3380:3306"
+#    volumes:
+#      - logs-datafiles:/var/lib/mysql
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: RootSuperRoot123
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: superpassword123
+      MYSQL_DATABASE: logs
+
+  inventory-database:
+    image: mysql:5.7
+    ports:
+      - "3366:3306"
+    volumes:
+      - inventory-datafiles:/var/lib/mysql
+    restart: always
+    environment: 
+      MYSQL_ROOT_PASSWORD: RootSuperRoot123
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: superpassword123
+      MYSQL_DATABASE: inventory
+
+  inventory.api:
+    image: ${DOCKER_REGISTRY-}inventoryapi
+    depends_on:
+      - inventory-database
+      - logs-database
+    build:
+      context: .
+      dockerfile: Inventory.API/Dockerfile
