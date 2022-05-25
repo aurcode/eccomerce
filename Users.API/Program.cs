@@ -1,31 +1,3 @@
-/*
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
-*/
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +11,8 @@ using Users.DataAccess;
 using Users.Users.Dto;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
 
 builder.Services
     .AddCors(options =>
@@ -66,25 +40,39 @@ builder.Services
     {
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer = true,
-            ValidateAudience = true,
+            ValidateIssuer = false,//true,
+            ValidateAudience = false,//true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            //ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            //ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
     });
 
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
-await SeedData();
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors("MyPolicy");
+
+app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("MyPolicy");
 
-app.MapGet("/", () => "Hello World!");
+app.MapControllers();
+
 app.MapPost("/token", async (AuthenticateRequestDto request, UserManager<User> userManager) =>
 {
     var user = await userManager.FindByNameAsync(request.UserName);
@@ -116,11 +104,11 @@ app.MapPost("/token", async (AuthenticateRequestDto request, UserManager<User> u
         expires: DateTime.Now.AddMinutes(720),
         signingCredentials: credentials);
 
-    var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
+    var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
 
     return Results.Ok(new
     {
-        AccessToken = jwt
+        AccessToken = token
     });
 });
 app.MapGet("/me", (IHttpContextAccessor contextAccessor) =>
@@ -141,7 +129,11 @@ app.MapGet("/me", (IHttpContextAccessor contextAccessor) =>
 })
 .RequireAuthorization();
 
+await SeedData();
+
 app.Run();
+
+
 
 async Task SeedData()
 {
@@ -174,10 +166,10 @@ async Task SeedData()
         });
         await roleManager.CreateAsync(new IdentityRole
         {
-            Name = "AnotherRole"
+            Name = "User"
         });
 
         await userManager.AddToRoleAsync(newUser, "Admin");
-        await userManager.AddToRoleAsync(newUser, "AnotherRole");
+        await userManager.AddToRoleAsync(newUser, "User");
     }
 }
