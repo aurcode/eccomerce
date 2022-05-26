@@ -7,4 +7,8 @@
     <RootNamespace>Users</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Users.Core\Users.Core.csproj" />
+  </ItemGroup>
+
 </Project>

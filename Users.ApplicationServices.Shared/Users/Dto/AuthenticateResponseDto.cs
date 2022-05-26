@@ -17,10 +17,10 @@ public class AuthenticateResponseDto
 
     public AuthenticateResponseDto(User user, string token)
     {
-        Id = user.Id;
+        //Id = user.Id;
         FirstName = user.FirstName;
         LastName = user.LastName;
-        Username = user.Username;
+        //Username = user.Username;
         Token = token;
     }
 }

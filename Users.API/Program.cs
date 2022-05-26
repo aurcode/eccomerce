@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Users.ApplicationServices.Users;
 using Users.Core.Users;
 using Users.DataAccess;
 using Users.Users.Dto;
@@ -50,6 +51,10 @@ builder.Services
         };
     });
 
+builder.Services.AddTransient<UserManager<User>>();
+builder.Services.AddTransient<IUsersAppService, UsersAppService>();
+builder.Services.Configure<Users.Core.JwtConfig>(builder.Configuration.GetSection("Jwt"));
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -72,62 +77,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapPost("/token", async (AuthenticateRequestDto request, UserManager<User> userManager) =>
-{
-    var user = await userManager.FindByNameAsync(request.UserName);
-
-    if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
-    {
-        return Results.Forbid();
-    }
-
-    var roles = await userManager.GetRolesAsync(user);
-    var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Sid, user.Id),
-        new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}")
-    };
-
-    foreach (var role in roles)
-    {
-        claims.Add(new Claim(ClaimTypes.Role, role));
-    }
-
-    var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]));
-    var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
-    var tokenDescriptor = new JwtSecurityToken(
-        issuer: builder.Configuration["Jwt:Issuer"],
-        audience: builder.Configuration["Jwt:Audience"],
-        claims: claims,
-        expires: DateTime.Now.AddMinutes(720),
-        signingCredentials: credentials);
-
-    var token = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
-
-    return Results.Ok(new
-    {
-        AccessToken = token
-    });
-});
-app.MapGet("/me", (IHttpContextAccessor contextAccessor) =>
-{
-    var user = contextAccessor.HttpContext.User;
-
-    return Results.Ok(new
-    {
-        Claims = user.Claims.Select(s => new
-        {
-            s.Type,
-            s.Value
-        }).ToList(),
-        user.Identity.Name,
-        user.Identity.IsAuthenticated,
-        user.Identity.AuthenticationType
-    });
-})
-.RequireAuthorization();
 
 await SeedData();
 

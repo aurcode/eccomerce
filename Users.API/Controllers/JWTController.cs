@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
+using Users.ApplicationServices.Users;
+using Users.Core;
 using Users.Core.Users;
 using Users.Users.Dto;
 
@@ -13,24 +18,52 @@ namespace Users.API.Controllers
     [ApiController]
     public class JWTController : ControllerBase
     {
-        [HttpGet("/")]
-        public string Get(int id)
+        private UserManager<User> _userManager;
+        private static IHttpContextAccessor _accessor;
+        private readonly IOptions<JwtConfig> config;
+        private readonly IUsersAppService _usersAppServices;
+
+        public JWTController(UserManager<User> userManager,
+            IUsersAppService usersAppServices,
+            IHttpContextAccessor contextAccessor,
+            IOptions<JwtConfig> config)
         {
-            return "Funciona";
+            _userManager = userManager;
+            _usersAppServices = usersAppServices;
+            _accessor = contextAccessor;
+            this.config = config;
         }
 
-        /*
-        [HttpPost("/")]
-        public async Task<IResult> Post(AuthenticateRequestDto request, UserManager<User> userManager)
+        [Authorize]
+        [HttpGet("/token")]
+        public IResult Get()
         {
-            var user = await userManager.FindByNameAsync(request.UserName);
+            var user = _accessor.HttpContext.User;
 
-            if (user is null || !await userManager.CheckPasswordAsync(user, request.Password))
+            return Results.Ok(new
+            {
+                Claims = user.Claims.Select(s => new
+                {
+                    s.Type,
+                    s.Value
+                }).ToList(),
+                user.Identity.Name,
+                user.Identity.IsAuthenticated,
+                user.Identity.AuthenticationType
+            });
+        }
+
+        [HttpPost("/token")]
+        public async Task<IResult> Post(AuthenticateRequestDto request)
+        {
+            var user = await _userManager.FindByNameAsync(request.UserName);
+
+            if (user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 return Results.Forbid();
             }
 
-            var roles = await userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Sid, user.Id),
@@ -43,11 +76,11 @@ namespace Users.API.Controllers
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Value.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptor = new JwtSecurityToken(
-                issuer: builder.Configuration["Jwt:Issuer"],
-                audience: builder.Configuration["Jwt:Audience"],
+                issuer: config.Value.Issuer,
+                audience: config.Value.Audience,
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(720),
                 signingCredentials: credentials);
@@ -59,6 +92,5 @@ namespace Users.API.Controllers
                 AccessToken = jwt
             });
         }
-        */
     }
 }
