@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Users.ApplicationServices.Shared\Users.ApplicationServices.Shared.csproj" />
+    <ProjectReference Include="..\Users.ApplicationServices\Users.ApplicationServices.csproj" />
     <ProjectReference Include="..\Users.DataAccess\Users.DataAccess.csproj" />
   </ItemGroup>
 

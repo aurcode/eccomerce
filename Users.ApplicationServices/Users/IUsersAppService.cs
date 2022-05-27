@@ -10,7 +10,7 @@ namespace Users.ApplicationServices.Users
 {
     public interface IUsersAppService
     {
-        AuthenticateResponseDto Authenticate(AuthenticateRequestDto model);
+        AuthenticateResponseDto AuthenticateAsync(AuthenticateRequestDto model);
         string generateToken(AuthenticateRequestDto model);
         //IEnumerable<User> GetAll();
         //User GetById(int id);

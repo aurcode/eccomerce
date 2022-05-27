@@ -40,8 +40,8 @@ builder.Services.AddCors(options =>
 string connectionString = builder.Configuration.GetConnectionString("Default");
 //string connectionString = builder.Configuration.GetConnectionString("MigrationConnection");
 builder.Services.AddDbContext<InventoryContext>(options =>
-               options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-               //options.UseInMemoryDatabase(databaseName: "inventory"));
+               //options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+               options.UseInMemoryDatabase(databaseName: "inventory"));
 
 builder.Services.AddTransient<IBrandsAppService, BrandsAppService>();
 builder.Services.AddTransient<IRepository<int, Brand>, Repository<int, Brand>>();
@@ -74,7 +74,7 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<InventoryContext>();
-    dataContext.Database.Migrate();
+    //dataContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();

@@ -100,25 +100,36 @@ async Task SeedData()
     {
         logger.LogInformation("Creando usuario de prueba");
 
+        var newAdmin = new User
+        {
+            Email = "admin@demo.com",
+            FirstName = "TestAdmin",
+            LastName = "Admin",
+            UserName = "admin.demo"
+        };
+
         var newUser = new User
         {
-            Email = "test@demo.com",
-            FirstName = "Test",
+            Email = "user@demo.com",
+            FirstName = "TestUser",
             LastName = "User",
-            UserName = "test.demo"
+            UserName = "user.demo"
         };
 
         await userManager.CreateAsync(newUser, "P@ss.W0rd");
+        await userManager.CreateAsync(newAdmin, "P@ss.W0rd");
+        
         await roleManager.CreateAsync(new IdentityRole
         {
-            Name = "Admin"
+            Name = "admin"
         });
         await roleManager.CreateAsync(new IdentityRole
         {
-            Name = "User"
+            Name = "user"
         });
 
-        await userManager.AddToRoleAsync(newUser, "Admin");
-        await userManager.AddToRoleAsync(newUser, "User");
+        await userManager.AddToRoleAsync(newAdmin, "admin");
+        await userManager.AddToRoleAsync(newAdmin, "user");
+        await userManager.AddToRoleAsync(newUser, "user");
     }
 }

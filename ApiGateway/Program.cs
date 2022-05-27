@@ -1,3 +1,4 @@
+using ApiGateway.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
@@ -20,14 +21,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ValidateIssuerSigningKey = true,
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("MyAnonymousAndSecuredSecretKey")),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"])),
                         ClockSkew = new System.TimeSpan(0)
                     };
                 });
 
 builder.Services.AddOcelot(configuration)
     //.AddDelegatingHandler<RemoveEncodingDelegatingHandler>(true)
-    //.AddDelegatingHandler<BlackListHandler>()
+    .AddDelegatingHandler<BlackListHandler>()
     //.AddSingletonDefinedAggregator<UsersPostsAggregator>();
     ;
 
@@ -53,7 +54,9 @@ app.UseSwaggerForOcelotUI(opt =>
 {
     opt.PathToSwaggerGenerator = "/swagger";
 }); // Try create swagger with all apis but I can't do it
-    
+
+app.UseAuthentication();
+
 app.UseOcelot().Wait();
 
 app.UseHttpsRedirection();

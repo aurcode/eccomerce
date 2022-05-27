@@ -5,7 +5,7 @@
   "Routes": [
     {
       "UpstreamPathTemplate": "/token",
-      "UpstreamHttpMethod": [ "posts" ],
+      "UpstreamHttpMethod": [ "Get", "Post" ],
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
@@ -15,6 +15,44 @@
       "DownstreamPathTemplate": "/token",
       "SwaggerKey": "token",
       "Key": "token"
+    },
+    {
+      "UpstreamPathTemplate": "/api/e/{everything}",
+      "UpstreamHttpMethod": [],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7165
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "inventoryAdmin",
+      "Key": "inventoryAdmin",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "userType": "admin"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7165
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "inventoryUser",
+      "Key": "inventoryUser",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "userType": "user"
+      }      
     }
   ],
   "SwaggerEndPoints": [

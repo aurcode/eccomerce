@@ -34,6 +34,12 @@ namespace Users.API.Controllers
             this.config = config;
         }
 
+        [HttpGet("/test")]
+        public string test()
+        {
+            return "test";
+        }
+
         [Authorize]
         [HttpGet("/token")]
         public IResult Get()
@@ -66,14 +72,16 @@ namespace Users.API.Controllers
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Sid, user.Id),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.GivenName, $"{user.FirstName} {user.LastName}")
+                new Claim("id", user.Id),
+                new Claim("UserName", user.UserName),
+                new Claim("LastName", user.FirstName),
+                new Claim("FisrtName", user.LastName),
+                new Claim("FullName", $"{user.FirstName} {user.LastName}")
             };
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                claims.Add(new Claim("userType", role));
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Value.Key));
