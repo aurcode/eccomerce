@@ -52,7 +52,7 @@ var app = builder.Build();
 
 app.UseSwaggerForOcelotUI(opt =>
 {
-    opt.PathToSwaggerGenerator = "/swagger";
+    opt.PathToSwaggerGenerator = "/swagger/docs";
 }); // Try create swagger with all apis but I can't do it
 
 app.UseAuthentication();

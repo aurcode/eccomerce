@@ -62,9 +62,29 @@
         {
           "Name": "token API",
           "Version": "v1",
-          "Url": "https://localhost:7158/swagger/"
+          "Url": "https://localhost:7158/swagger/v1/swagger.json"
         }
       ]
-    }
+    },
+    {
+      "Key": "inventoryUser",
+      "Config": [
+        {
+          "Name": "Inventory User API",
+          "Version": "v1",
+          "Url": "https://localhost:7165/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "inventoryAdmin",
+      "Config": [
+        {
+          "Name": "Inventory Admin API",
+          "Version": "v1",
+          "Url": "https://localhost:7165/swagger/v1/swagger.json"
+        }
+      ]
+    }    
   ]
 }
