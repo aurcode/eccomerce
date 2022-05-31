@@ -51,7 +51,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "userType": "user"
+        "Role": [ "user", "admin" ]
       }      
     }
   ],
@@ -60,7 +60,7 @@
       "Key": "token",
       "Config": [
         {
-          "Name": "token API",
+          "Name": "Token API",
           "Version": "v1",
           "Url": "https://localhost:7158/swagger/v1/swagger.json"
         }

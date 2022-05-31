@@ -34,12 +34,6 @@ namespace Users.API.Controllers
             this.config = config;
         }
 
-        [HttpGet("/test")]
-        public string test()
-        {
-            return "test";
-        }
-
         [Authorize]
         [HttpGet("/token")]
         public IResult Get()
