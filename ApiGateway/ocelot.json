@@ -32,7 +32,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "userType": "admin"
+        "Role": "admin"
       }
     },
     {
@@ -51,7 +51,7 @@
         "AuthenticationProviderKey": "Bearer"
       },
       "RouteClaimsRequirement": {
-        "Role": [ "user", "admin" ]
+        "Role": "user, admin"
       }      
     }
   ],

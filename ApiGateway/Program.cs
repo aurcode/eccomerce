@@ -1,8 +1,10 @@
+using ApiGateway;
 using ApiGateway.Handlers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.Net;
 using System.Text;
 
 IConfiguration configuration = new ConfigurationBuilder()
@@ -25,30 +27,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                         ClockSkew = new System.TimeSpan(0)
                     };
                 });
-
 builder.Services.AddOcelot(configuration)
     //.AddDelegatingHandler<RemoveEncodingDelegatingHandler>(true)
     .AddDelegatingHandler<BlackListHandler>()
     //.AddSingletonDefinedAggregator<UsersPostsAggregator>();
     ;
-
 builder.Services.AddSwaggerForOcelot(configuration);
-
-//builder.Services.AddSwaggerForOcelot(Configuration);
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
 
 app.UseSwaggerForOcelotUI(opt =>
 {
@@ -57,7 +44,33 @@ app.UseSwaggerForOcelotUI(opt =>
 
 app.UseAuthentication();
 
-app.UseOcelot().Wait();
+//var configuration = new OcelotPipelineConfiguration
+//{
+    //AuthorisationMiddleware
+        //= async (downStreamContext, next) =>
+        //await OcelotJwtMiddleware.CreateAuthorizationFilter(downStreamContext, next)
+//};
+
+var config= new OcelotPipelineConfiguration
+{
+    AuthorizationMiddleware = async (ctx, next) =>
+    {
+        if (OcelotJwtMiddleware.Authorize(ctx))
+        {
+            await next.Invoke();
+        }
+        else
+        {
+            new DownstreamResponse(new HttpResponseMessage(HttpStatusCode.Unauthorized)
+            {
+                Content = new StringContent("Unauthorized", Encoding.UTF8, "application/json")
+            });
+        }
+
+    }
+};
+
+app.UseOcelot(config).Wait();
 
 app.UseHttpsRedirection();
 

@@ -75,7 +75,7 @@ namespace Users.API.Controllers
 
             foreach (var role in roles)
             {
-                claims.Add(new Claim("userType", role));
+                claims.Add(new Claim("Role", role));
             }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Value.Key));

@@ -129,7 +129,7 @@ async Task SeedData()
         });
 
         await userManager.AddToRoleAsync(newAdmin, "admin");
-        await userManager.AddToRoleAsync(newAdmin, "user");
+        //await userManager.AddToRoleAsync(newAdmin, "user");
         await userManager.AddToRoleAsync(newUser, "user");
     }
 }
