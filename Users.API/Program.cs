@@ -55,10 +55,12 @@ builder.Services.AddTransient<UserManager<User>>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.Configure<Users.Core.JwtConfig>(builder.Configuration.GetSection("Jwt"));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 var app = builder.Build();
 
@@ -102,6 +104,7 @@ async Task SeedData()
 
         var newAdmin = new User
         {
+            NormalizedUserName = "admin",
             Email = "admin@demo.com",
             FirstName = "TestAdmin",
             LastName = "Admin",
@@ -110,12 +113,13 @@ async Task SeedData()
 
         var newUser = new User
         {
+            NormalizedUserName = "admin",
             Email = "user@demo.com",
             FirstName = "TestUser",
             LastName = "User",
             UserName = "user.demo"
         };
-
+        
         await userManager.CreateAsync(newUser, "P@ss.W0rd");
         await userManager.CreateAsync(newAdmin, "P@ss.W0rd");
         

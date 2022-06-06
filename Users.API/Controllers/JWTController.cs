@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using Users.ApplicationServices.Users;
@@ -39,14 +40,37 @@ namespace Users.API.Controllers
         public IResult Get()
         {
             var user = _accessor.HttpContext.User;
+            var claims = user.Claims.Select(x => new { x.Type, x.Value }).ToList()
+                .GroupBy(claim => claim.Value); //.ToDictionary(x => );
+
+            //var dic = claims.ToDictionary(x)
+            /*foreach (var list in claims)
+            {
+
+                
+                dictionary.Append(list.Type, list.Value);
+                //foreach (var e in list)
+                //{
+                //Console.WriteLine(e);
+                //}
+            }*/
+
+
+
+            //foreach
+            //claims.
 
             return Results.Ok(new
             {
-                Claims = user.Claims.Select(s => new
-                {
-                    s.Type,
-                    s.Value
-                }).ToList(),
+                Claims =
+                //Claims = user.Claims.Select(s => new
+                //{
+                //s.Type,
+                //s.Value
+                //}).ToList(),
+                claims
+                //.GroupBy(claim => claim)
+                .ToDictionary(group => group.Last().Type, group => group.Last().Value),
                 user.Identity.Name,
                 user.Identity.IsAuthenticated,
                 user.Identity.AuthenticationType
@@ -84,7 +108,7 @@ namespace Users.API.Controllers
                 issuer: config.Value.Issuer,
                 audience: config.Value.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(720),
+                expires: DateTime.Now.AddMinutes(100000),
                 signingCredentials: credentials);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);

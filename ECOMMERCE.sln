@@ -53,17 +53,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIGateway", "APIGateway", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiGateway", "ApiGateway\ApiGateway.csproj", "{0E4A2D40-C036-4244-98A3-554D6AB42CE2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.API", "Ordering.API\Ordering.API.csproj", "{7928A556-A362-40CE-B2E3-6F22E1091238}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.API", "Ordering.API\Ordering.API.csproj", "{7928A556-A362-40CE-B2E3-6F22E1091238}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Test", "Ordering.Test\Ordering.Test.csproj", "{562C7D1D-B946-4092-A361-E59DFE44E131}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Test", "Ordering.Test\Ordering.Test.csproj", "{562C7D1D-B946-4092-A361-E59DFE44E131}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.ApplicationServices.Shared", "Ordering.ApplicationServices.Shared\Ordering.ApplicationServices.Shared.csproj", "{2D38A558-ED12-44C9-BBF1-88B7B4970393}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.ApplicationServices.Shared", "Ordering.ApplicationServices.Shared\Ordering.ApplicationServices.Shared.csproj", "{2D38A558-ED12-44C9-BBF1-88B7B4970393}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.ApplicationServices", "Ordering.ApplicationServices\Ordering.ApplicationServices.csproj", "{5435DD5E-59B3-4688-980D-ACAA8069A27C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.ApplicationServices", "Ordering.ApplicationServices\Ordering.ApplicationServices.csproj", "{5435DD5E-59B3-4688-980D-ACAA8069A27C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.Core", "Ordering.Core\Ordering.Core.csproj", "{FF6CCE39-8681-4B05-8CC0-772FB38A3D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.Core", "Ordering.Core\Ordering.Core.csproj", "{FF6CCE39-8681-4B05-8CC0-772FB38A3D89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ordering.DataAccess", "Ordering.DataAccess\Ordering.DataAccess.csproj", "{96483CFB-EFEC-4F4E-A550-975E767C04C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ordering.DataAccess", "Ordering.DataAccess\Ordering.DataAccess.csproj", "{96483CFB-EFEC-4F4E-A550-975E767C04C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

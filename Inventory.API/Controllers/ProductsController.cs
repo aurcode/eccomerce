@@ -48,7 +48,7 @@ namespace Inventory.API.Controllers
 
         // PUT api/<Products>/5
         [HttpPut("{id}")]
-        public async Task Put(int id, [FromBody] ProductDto entity)
+        public async Task<IActionResult> Put(int id, [FromBody] ProductDto entity)
         {
             if (entity == null)
             {
@@ -57,14 +57,20 @@ namespace Inventory.API.Controllers
 
             entity.Id = id;
 
-            await _productsAppService.EditAsync(entity);
+            return await _productsAppService.EditAsync(entity);
         }
 
         // DELETE api/<Products>/5
         [HttpDelete("{id}")]
-        public async Task Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _productsAppService.DeleteAsync(id);
+            return await _productsAppService.DeleteAsync(id);
+        }
+        
+        [HttpGet("{id}/{qty}")]
+        public async Task<IActionResult> order(int id, int qty)
+        {
+            return await _productsAppService.createOrderAsync(id, qty);
         }
     }
 }
