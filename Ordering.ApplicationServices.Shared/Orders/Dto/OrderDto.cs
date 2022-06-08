@@ -13,7 +13,7 @@ namespace Ordering.Orders.Dto
         [Required]
         public int ProductId { get; set; }
         [Required]
-        public int clientId { get; set; }
+        public string clientId { get; set; }
         [Required]
         public int Qty { get; set; }
         [Required]

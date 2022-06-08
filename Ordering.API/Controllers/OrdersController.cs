@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using Ordering.ApplicationServices.Orders;
 using Ordering.Orders.Dto;
 
@@ -11,10 +13,12 @@ namespace Ordering.API.Controllers
     {
         private readonly IOrdersAppService _ordersAppService;
         private readonly ILogger _logger;
-
-        public OrdersController(IOrdersAppService ordersAppService, ILogger<OrdersController> logger)
+        private IHttpContextAccessor _httpContextAccessor;
+        
+        public OrdersController(IOrdersAppService ordersAppService, IHttpContextAccessor httpContextAccessor, ILogger<OrdersController> logger)
         {
             _ordersAppService = ordersAppService;
+            _httpContextAccessor = httpContextAccessor;            
         }
 
         [HttpGet]
@@ -31,7 +35,10 @@ namespace Ordering.API.Controllers
                 throw new ArgumentNullException(nameof(entity));
             }
 
-            await _ordersAppService.AddAsync(entity);
+            var accessToken = _httpContextAccessor.HttpContext.Request.Headers["Authorization"];
+
+
+            await _ordersAppService.AddAsync(entity, accessToken);
         }
     }
 }

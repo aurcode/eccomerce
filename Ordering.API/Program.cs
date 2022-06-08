@@ -37,6 +37,8 @@ builder.Services.AddHttpClient("user", client =>
     client.BaseAddress = new Uri(builder.Configuration["AppSettings:UserUrlBase"]);
 }).ConfigurePrimaryHttpMessageHandler(() => (clientHandler));
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

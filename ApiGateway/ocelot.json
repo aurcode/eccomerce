@@ -17,7 +17,7 @@
       "Key": "token"
     },
     {
-      "UpstreamPathTemplate": "/api/e/{everything}",
+      "UpstreamPathTemplate": "/api/admin/inventory/{everything}",
       "UpstreamHttpMethod": [],
       "DownstreamHostAndPorts": [
         {
@@ -36,7 +36,7 @@
       }
     },
     {
-      "UpstreamPathTemplate": "/api/{everything}",
+      "UpstreamPathTemplate": "/api/inventory/{everything}",
       "UpstreamHttpMethod": [ "GET" ],
       "DownstreamHostAndPorts": [
         {
@@ -52,7 +52,26 @@
       },
       "RouteClaimsRequirement": {
         "Role": "user, admin"
-      }      
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/order/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7065
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "orderUser",
+      "Key": "orderUser",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role": "user, admin"
+      }
     }
   ],
   "SwaggerEndPoints": [
@@ -85,6 +104,16 @@
           "Url": "https://localhost:7165/swagger/v1/swagger.json"
         }
       ]
-    }    
+    },
+    {
+      "Key": "orderUser",
+      "Config": [
+        {
+          "Name": "Order User API",
+          "Version": "v1",
+          "Url": "https://localhost:7065/swagger/v1/swagger.json"
+        }
+      ]
+    }
   ]
 }

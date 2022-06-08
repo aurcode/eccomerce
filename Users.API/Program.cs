@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Users.ApplicationServices;
 using Users.ApplicationServices.Users;
 using Users.Core.Users;
 using Users.DataAccess;
@@ -54,6 +55,8 @@ builder.Services
 builder.Services.AddTransient<UserManager<User>>();
 builder.Services.AddTransient<IUsersAppService, UsersAppService>();
 builder.Services.Configure<Users.Core.JwtConfig>(builder.Configuration.GetSection("Jwt"));
+
+builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
@@ -104,7 +107,6 @@ async Task SeedData()
 
         var newAdmin = new User
         {
-            NormalizedUserName = "admin",
             Email = "admin@demo.com",
             FirstName = "TestAdmin",
             LastName = "Admin",
@@ -113,7 +115,6 @@ async Task SeedData()
 
         var newUser = new User
         {
-            NormalizedUserName = "admin",
             Email = "user@demo.com",
             FirstName = "TestUser",
             LastName = "User",

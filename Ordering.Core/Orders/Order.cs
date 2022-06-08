@@ -14,7 +14,7 @@ namespace Ordering.Core.Orders
         [Required]
         public int ProductId { get; set; }
         [Required]
-        public int clientId { get; set; }
+        public string clientId { get; set; }
         [Required]
         public int Qty { get; set; }
         [Required]

@@ -18,6 +18,29 @@ namespace Inventory.API.Controllers
         {
             _productsAppService = productsAppService;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            ProductDto dto = new ProductDto() {
+                Name = "Wilson Men's Ace Red Sports Shoes",
+                Description = "Wilson sports shoe, Rubber sole, American size",
+                BrandId = 1,
+                CategoryId = 1,
+                ImageURL = "https://http2.mlstatic.com/D_NQ_NP_847793-MLV49398641869_032022-O.webp",
+                Price = 30,
+                Qty = 100
+            };
+            _productsAppService.AddAsync(dto);
+
+            ProductDto dto2 = new ProductDto()
+            {
+                Name = "Table Tennis Shirt Ping Pong Butterfly",
+                Description = "Shirts size: XL. size small.",
+                BrandId = 2,
+                CategoryId = 2,
+                ImageURL = "https://http2.mlstatic.com/D_NQ_NP_774062-MLV48676399848_122021-O.webp",
+                Price = 35,
+                Qty = 20
+            };
+            _productsAppService.AddAsync(dto2);
         }
 
         // GET: api/<Products>

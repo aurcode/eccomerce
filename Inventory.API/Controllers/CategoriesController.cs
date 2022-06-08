@@ -18,6 +18,11 @@ namespace Inventory.API.Controllers
         {
             _categoriesAppService = categoriesAppService;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            CategoryDto dto = new CategoryDto() { Name = "Shoes" };
+            _categoriesAppService.AddAsync(dto);
+            CategoryDto dto2 = new CategoryDto() { Name = "Clothing" };
+            _categoriesAppService.AddAsync(dto2);
         }
 
         // GET: api/<Categories>

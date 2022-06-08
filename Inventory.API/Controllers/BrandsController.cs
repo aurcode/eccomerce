@@ -19,6 +19,11 @@ namespace Inventory.API.Controllers
         {
             _brandsAppService = brandsAppService;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            BrandDto dto = new BrandDto() { Name = "Wilson" };
+            _brandsAppService.AddAsync(dto);
+            BrandDto dto2 = new BrandDto() { Name = "Nike" };
+            _brandsAppService.AddAsync(dto2);
         }
 
         // GET: api/<Brands>

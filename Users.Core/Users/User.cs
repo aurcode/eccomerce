@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,5 +13,10 @@ namespace Users.Core.Users
     {
         public string FirstName { get; set; } = default!;
         public string LastName { get; set; } = default!;
+
+        public static implicit operator ClaimsPrincipal(User v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
