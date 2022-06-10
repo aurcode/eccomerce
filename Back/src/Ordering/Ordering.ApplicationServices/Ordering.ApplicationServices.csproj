@@ -15,7 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Ordering.ApplicationServices.Shared\Ordering.ApplicationServices.Shared.csproj" />
+	  <ProjectReference Include="..\..\shared\Ordering.ApplicationServices.Shared\Ordering.ApplicationServices.Shared.csproj" />
 	  <ProjectReference Include="..\Ordering.Core\Ordering.Core.csproj" />
 	  <ProjectReference Include="..\Ordering.DataAccess\Ordering.DataAccess.csproj" />
 	</ItemGroup>

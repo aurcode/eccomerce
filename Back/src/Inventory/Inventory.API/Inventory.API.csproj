@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\shared\Inventory.ApplicationServices.Shared\Inventory.ApplicationServices.Shared.csproj" />
     <ProjectReference Include="..\Inventory.ApplicationServices\Inventory.ApplicationServices.csproj" />
     <ProjectReference Include="..\Inventory.DataAccess\Inventory.DataAccess.csproj" />
   </ItemGroup>
