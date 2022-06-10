@@ -1,0 +1,142 @@
+﻿{
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5012"
+  },
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/token",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users.api",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/token",
+      "SwaggerKey": "token",
+      "Key": "token"
+    },
+    {
+      "UpstreamPathTemplate": "/api/admin/users/{everything}",
+      "UpstreamHttpMethod": [],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "users.api",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "userAdmin",
+      "Key": "userAdmin"
+    },
+    {
+      "UpstreamPathTemplate": "/api/admin/inventory/{everything}",
+      "UpstreamHttpMethod": [],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory.api",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "inventoryAdmin",
+      "Key": "inventoryAdmin",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role": "admin"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/inventory/{everything}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "inventory.api",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "inventoryUser",
+      "Key": "inventoryUser",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role": "user, admin"
+      }
+    },
+    {
+      "UpstreamPathTemplate": "/api/order/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "ordering.api",
+          "Port": 80
+        }
+      ],
+      "DownstreamPathTemplate": "/api/{everything}",
+      "SwaggerKey": "orderUser",
+      "Key": "orderUser",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+      },
+      "RouteClaimsRequirement": {
+        "Role": "user, admin"
+      }
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "token",
+      "Config": [
+        {
+          "Name": "Token API",
+          "Version": "v1",
+          "Url": "http://users.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "userAdmin",
+      "Config": [
+        {
+          "Name": "User Admin API",
+          "Version": "v1",
+          "Url": "http://users.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "inventoryUser",
+      "Config": [
+        {
+          "Name": "Inventory User API",
+          "Version": "v1",
+          "Url": "http://inventory.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "inventoryAdmin",
+      "Config": [
+        {
+          "Name": "Inventory Admin API",
+          "Version": "v1",
+          "Url": "http://inventory.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "orderUser",
+      "Config": [
+        {
+          "Name": "Order User API",
+          "Version": "v1",
+          "Url": "http://ordering.api:80/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}

@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 
 IConfiguration configuration = new ConfigurationBuilder()
-                            .AddJsonFile("ocelot.json")
+                            .AddJsonFile("ocelot.Development.json")
                             .Build();
 
 var builder = WebApplication.CreateBuilder(args);
