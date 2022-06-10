@@ -1,0 +1,21 @@
+<div>
+  <div class="container">
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input class="form-control" id="email"
+               type="email" formControlName="email" placeholder="Email"/>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input class="form-control" id="password"
+               type="password" formControlName="password" placeholder="Password"/>
+      </div>
+      <div class="mb-3" *ngIf="!!errorMessage">
+        <div class="alert alert-danger" role="alert">{{errorMessage}}</div>
+      </div>
+      <button [disabled]="loginForm.invalid" class="btn btn-success" type="submit">Join</button>
+    </form>
+  </div>
+</div>
